@@ -1,8 +1,7 @@
 export const appRoutes = {
-    home: '/',
-    admin: '/admin',
-    signUp: '/signUp',
-    signIn: '/signIn',
-    movieDetails: '/movie-details',
-    errorPage: '*'
-}
+  home: "/",
+  admin: "/admin",
+  signUp: "/signUp",
+  signIn: "/signIn",
+  errorPage: "*",
+};

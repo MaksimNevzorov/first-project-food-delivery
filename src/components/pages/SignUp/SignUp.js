@@ -4,7 +4,8 @@ import "../../atoms";
 import { initialFieldsState } from "./initialState";
 import { FormManager } from "../../../core/FormManager/FormManager";
 import { Validator } from "../../../core/FormManager/Validator";
-import { authService } from "../../../services/Auth/Auth";
+import { authService } from "../../../services/Auth";
+import { appRoutes } from "../../../constants/appRoutes";
 
 export class SignUpPage extends Component {
   constructor() {
@@ -20,7 +21,7 @@ export class SignUpPage extends Component {
     this.form = new FormManager();
   }
 
-  toggleIsLoading = () => {
+  toggleisLoading = () => {
     this.setState((state) => {
       return {
         ...state,
@@ -30,11 +31,12 @@ export class SignUpPage extends Component {
   };
 
   registerUser = (data) => {
-    console.log(data);
+    this.toggleisLoading();
     authService
       .signUp(data.email, data.password)
       .then((user) => {
-        console.log(user);
+        authService.user = user;
+        this.dispatch("change-route", { target: appRoutes.home });
       })
       .catch((error) => {
         this.setState((state) => {
@@ -45,7 +47,7 @@ export class SignUpPage extends Component {
         });
       })
       .finally(() => {
-        this.toggleIsLoading();
+        this.toggleisLoading();
       });
   };
 
@@ -83,14 +85,10 @@ export class SignUpPage extends Component {
     const {
       fields: { email, password },
     } = this.state;
-    console.log({
-      fields: { email, password },
-    });
 
     return `
-      <it-preloader is-loading="${this.state.isLoading}">
         <form class="mt-5 registration-form">
-        
+          <div class="invalid-feedback text-center mb-3 d-block">${this.state.error}</div>
           <it-input
             type="email"
             label="Email"
@@ -113,7 +111,6 @@ export class SignUpPage extends Component {
           ></it-input>
           <button type="submit" class="btn btn-primary">Sign in</button>
         </form>
-      </it-preloader>
     
     `;
   }

@@ -2,11 +2,13 @@ const { merge } = require("webpack-merge");
 const baseWebpackConfig = require("./webpack.base.config");
 const webpack = require("webpack");
 
+require("dotenv").config({ path: "./.env" });
+
 const devWebpackConfig = merge(baseWebpackConfig, {
   mode: "development",
   devtool: "cheap-module-source-map",
   devServer: {
-  historyApiFallback: true,
+    historyApiFallback: true,
     static: "./",
     port: 3000,
     client: {
